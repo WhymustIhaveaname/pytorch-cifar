@@ -70,7 +70,7 @@ class Bottleneck(nn.Module):
         return out
 
 
-class SubtractResNet(nn.Module):
+class NegNet(nn.Module):
     def __init__(self, block, num_blocks, num_classes=10):
         super().__init__()
         self.in_planes = 64
@@ -104,12 +104,12 @@ class SubtractResNet(nn.Module):
         return out
 
 
-def SubtractResNet18():
-    return SubtractResNet(SubtractBasicBlock, [2, 2, 2, 2])
+def NegNet18():
+    return NegNet(SubtractBasicBlock, [2, 2, 2, 2])
 
 
-def SubtractResNet34():
-    return SubtractResNet(SubtractBasicBlock, [3, 4, 6, 3])
+def NegNet34():
+    return NegNet(SubtractBasicBlock, [3, 4, 6, 3])
 
 
 # def ResNet50():
@@ -125,7 +125,7 @@ def SubtractResNet34():
 
 
 def test():
-    net = SubtractResNet18()
+    net = NegNet18()
     y = net(torch.randn(1, 3, 32, 32))
     print(y.size())
 

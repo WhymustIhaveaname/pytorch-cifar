@@ -73,7 +73,7 @@ print('==> Building model..')
 # net = EfficientNetB0()
 # net = RegNetX_200MF()
 # net = SimpleDLA()
-net = SubtractResNet18()
+net = NegNet18()
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
@@ -142,25 +142,25 @@ def test(epoch):
                              % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
     # Save checkpoint.
-    acc = 100.*correct/total
+    acc = 100*correct/total
     accus.append(acc)
+
+    state = {
+        # 'net': net.state_dict(),
+        # 'optimizer': optimizer.state_dict()['param_groups'],
+        # 'scheduler': scheduler.state_dict(),
+        'accus': accus
+    }
     if acc > best_acc:
-        print('Saving...')
-        state = {
-            'net': net.state_dict(),
-            'acc': acc,
-            'epoch': epoch,
-            'optimizer': optimizer.state_dict(),
-            'scheduler': scheduler.state_dict(),
-            'accus': accus
-        }
-        if not os.path.isdir('checkpoint'):
-            os.mkdir('checkpoint')
-        torch.save(state, './checkpoint/ckpt.pth')
         best_acc = acc
+        state['acc'] = best_acc
+        state['epoch'] = epoch
+    print('Saving...')
+    if not os.path.isdir('checkpoint'):
+        os.mkdir('checkpoint')
+    torch.save(state, './checkpoint/ckpt.pth')
 
-
-for epoch in range(start_epoch, 200):
+for epoch in range(start_epoch, 500):
     train(epoch)
     test(epoch)
     scheduler.step()
