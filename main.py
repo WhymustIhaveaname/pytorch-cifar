@@ -76,7 +76,7 @@ print('==> Building model..')
 net = NegNet18()
 net = net.to(device)
 if device == 'cuda':
-    net = torch.nn.DataParallel(net)
+    # net = torch.nn.DataParallel(net)
     cudnn.benchmark = True
 
 if args.resume:
@@ -158,7 +158,7 @@ def test(epoch):
     print('Saving...')
     if not os.path.isdir('checkpoint'):
         os.mkdir('checkpoint')
-    torch.save(state, './checkpoint/ckpt.pth')
+    torch.save(state, './checkpoint/%s.pth'%(net.__class__.__name__))
 
 for epoch in range(start_epoch, 500):
     train(epoch)
