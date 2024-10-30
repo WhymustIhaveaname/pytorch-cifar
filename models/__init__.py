@@ -17,3 +17,5 @@ from .regnet import *
 from .dla_simple import *
 from .dla import *
 from .negnet import *
+from .testnet import *
+from .vanillanet import *
