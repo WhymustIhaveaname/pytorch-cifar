@@ -93,7 +93,7 @@ if args.resume:
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=args.lr,
                       momentum=0.9, weight_decay=5e-4)
-scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=500)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 
 # Training
 def train(epoch):
@@ -160,7 +160,7 @@ def test(epoch):
         os.mkdir('checkpoint')
     torch.save(state, './checkpoint/%s.pth'%(net.__class__.__name__))
 
-for epoch in range(start_epoch, 500):
+for epoch in range(start_epoch, 200):
     train(epoch)
     test(epoch)
     scheduler.step()
